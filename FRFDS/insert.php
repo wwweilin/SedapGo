@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 @include "pdo.php";
 
 if(isset($_POST['add_food'])){
@@ -19,9 +19,9 @@ if(isset($_POST['add_food'])){
               ':rating' => $f_rating));
   if ($insert_stmt) {
     move_uploaded_file($f_image_tmp_name, $f_image_folder);
-    $message[] = "Food item added successfully.";
+    $_SESSION['message'] = "Food item added successfully.";
   }else{
-    $message[] = "Food item is not added successfully.";
+    $_SESSION['message'] = "Food item is not added successfully.";
   }
 }
 ?>
@@ -43,11 +43,10 @@ if(isset($_POST['add_food'])){
 </head>
 <body>
   <?php
-  if(isset($message)){
-   foreach($message as $message){
-      echo '<div class="message"><span>'.$message.'</span> <i class="fas fa-times" onclick="this.parentElement.style.display = ‘none’;"></i> </div>';
-   };
-  };
+  if(isset($_SESSION['message'])){
+      echo '<div class="message"><span>' . $_SESSION['message']. '</span> <i class="fas fa-times" onclick="this.parentElement.style.display = `none`;"></i> </div>';
+      unset($_SESSION['message']);
+   }
 
 
   ?>
@@ -64,7 +63,7 @@ if(isset($_POST['add_food'])){
    <input type="file" name="f_image" accept="image/png, image/jpg, image/jpeg" class="box" required>
    <input type="number" name="f_rating" step="0.01" min="0" max="5" placeholder="enter the food rating" class="box" required>
    <input type="submit" value="add new food item" name="add_food" class="btn">
-</form>
+  </form>
 
 </section>
 </div>

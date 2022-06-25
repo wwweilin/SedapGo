@@ -2,29 +2,6 @@
 
 @include 'pdo.php';
 
-if(isset($_POST['add_to_cart'])){
-
-   $f_name = $_POST['food_name'];
-   $f_price = $_POST['unit_price'];
-   $f_image = $_POST['image'];
-   $f_quantity = 1;
-
-   $select_cart = $pdo->prepare("SELECT * FROM cart WHERE food_name = :name");
-   $select_cart -> execute(array(':name' => $f_name));
-   $rows = $select_cart->rowCount();
-
-   if($rows > 0){
-      $message[] = 'product already added to cart';
-   }else{
-      $insert_stmt = $pdo -> prepare("INSERT INTO cart(food_name, quantity, unit_price, image) VALUES(:name, :quantity, :price, :image)");
-      $insert_stmt ->execute(array(':name' => $f_name,
-                ':quantity' => $f_quantity,
-                ':price' => $f_price,
-                ':image' => $f_image));
-      $message[] = 'product added to cart succesfully';
-   }
-
-}
 
 ?>
 
@@ -43,16 +20,8 @@ if(isset($_POST['add_to_cart'])){
    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div class="overlay">
 
-<?php
-
-if(isset($message)){
-   foreach($message as $message){
-      echo '<div class="message"><span>'.$message.'</span> <i class="fas fa-times" onclick="this.parentElement.style.display = `none`;"></i> </div>';
-   };
-};
-
-?>
 
 <?php include 'header.php'; ?>
 
@@ -79,8 +48,13 @@ if(isset($message)){
             <div class="price">RM<?php echo $row['unit_price']; ?></div>
             <?php
             $rating=$row['rating'];
-            for ($i=0; $i<$rating; $i++) {?>
+            $count=floor($rating);
+            for ($i=0; $i<$count; $i++) {?>
               <i class="fa fa-star fa-2x" style="color: orange" ></i>
+            <?php
+            }
+            if ($row['rating'] !== $count){ ?>
+              <i class="fa fa-star-half fa-2x" style="color: orange" ></i>
             <?php
             }
             ?>
@@ -105,6 +79,6 @@ if(isset($message)){
 
 <!-- custom js file link  -->
 <script src="script.js"></script>
-
+</div>
 </body>
 </html>

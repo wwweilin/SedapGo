@@ -7,7 +7,7 @@
       <img src="img/logo.png" class="logo" alt="SedapGo"/>
 
       <nav class="navbar">
-         <a href="index.php">view products</a>
+         <a href="index.php">View Products</a>
       </nav>
 
       <?php
@@ -17,9 +17,9 @@
 
       ?>
 
-      <a href="cart.php" class="cart">cart <span><?php echo $row_count; ?></span> </a>
+      <a href="insert.php" class="cart">Add Products<span></a>
 
-      <div id="menu-btn" class="fas fa-bars"></div>
+    
 
    </div>
 
